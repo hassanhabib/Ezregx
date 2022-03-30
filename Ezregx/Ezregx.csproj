@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Ezregx.Tests.Unit\" />
-    <Folder Include="Ezregx\" />
+    <Compile Remove="Ezregx.Tests.Unit\**" />
+    <Compile Remove="Ezregx\**" />
+    <EmbeddedResource Remove="Ezregx.Tests.Unit\**" />
+    <EmbeddedResource Remove="Ezregx\**" />
+    <None Remove="Ezregx.Tests.Unit\**" />
+    <None Remove="Ezregx\**" />
   </ItemGroup>
 
 </Project>
