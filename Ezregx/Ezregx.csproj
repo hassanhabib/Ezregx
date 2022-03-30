@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Ezregx.Tests.Unit\" />
+    <Folder Include="Ezregx\" />
+  </ItemGroup>
+
 </Project>
