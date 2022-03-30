@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// Copyright (c) Coalition of the Good-Hearted Engineers
+// ---------------------------------------------------------------
+
 using Xunit;
 
 namespace Ezregx.Tests.Unit
