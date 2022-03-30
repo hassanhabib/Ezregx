@@ -30,7 +30,7 @@ var githubPipeline = new GithubPipeline
     {
         Build = new BuildJob
         {
-            RunsOn = BuildMachines.Windows2019,
+            RunsOn = BuildMachines.Windows2022,
 
             Steps = new List<GithubTask>
             {
@@ -45,7 +45,7 @@ var githubPipeline = new GithubPipeline
 
                     TargetDotNetVersion = new TargetDotNetVersion
                     {
-                        DotNetVersion = "6.0.3"
+                        DotNetVersion = "6.0.201"
                     }
                 },
 
