@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Ezregx.Tests.Unit\**" />
+    <Compile Remove="Ezregx\**" />
+    <EmbeddedResource Remove="Ezregx.Tests.Unit\**" />
+    <EmbeddedResource Remove="Ezregx\**" />
+    <None Remove="Ezregx.Tests.Unit\**" />
+    <None Remove="Ezregx\**" />
+  </ItemGroup>
+
+</Project>
