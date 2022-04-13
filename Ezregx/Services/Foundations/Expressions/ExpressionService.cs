@@ -2,16 +2,13 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
-using Ezregx.Services.Foundations.Expressions;
-
-namespace Ezregx
+namespace Ezregx.Services.Foundations.Expressions
 {
-    public static class Expression
+    public partial class ExpressionService : IExpressionService
     {
-        private static IExpressionService ExpressionService =
-            new ExpressionService();
+        private string expression;
 
-        public static string OnStart(this string text) =>
+        public string GetStartExpression() =>
             throw new NotImplementedException();
     }
 }
