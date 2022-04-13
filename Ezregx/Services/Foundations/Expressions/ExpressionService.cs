@@ -8,7 +8,6 @@ namespace Ezregx.Services.Foundations.Expressions
     {
         private string expression;
 
-        public string GetStartExpression() =>
-            throw new NotImplementedException();
+        public string GetStartExpression() => "^";
     }
 }
