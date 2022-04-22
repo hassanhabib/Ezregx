@@ -5,10 +5,13 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.6.0" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Moq" Version="4.17.2" />
     <PackageReference Include="xunit" Version="2.4.1" />

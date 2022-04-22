@@ -3,8 +3,12 @@
 // ---------------------------------------------------------------
 
 using System;
+using System.Dynamic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using Ezregx.Services.Foundations.Expressions;
 using FluentAssertions;
 using Xunit;
@@ -51,21 +55,56 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
         public void DeleteMeTo()
         {
             //given
-            MethodInfo? methodInfo = GetMethodInfo(nameof(this.expressionService.GetStartExpression));
+            TryCatchInject.Setup(this.expressionService);
 
-            ExpressionService.ReturningStringFunction parameter
-                                                    = () => throw new Exception();
             //when
-            Action tryCatch = () => methodInfo.Invoke(this.expressionService,
-                new object[] { parameter });
+            Action action = () => this.expressionService.GetStartExpression();
 
             //then
-            tryCatch.Should()
-                    .Throw<TargetInvocationException>()
-                    .WithInnerException<Exception>(); 
+            action.Should().Throw<Exception>();
         }
 
 
+    }
+
+    public class TryCatchInject
+    {
+        private static object target;
+        private const string method = "TryCatch";
+        public TryCatchInject()
+        {
+        }
+        public static void Setup(object target)
+        {
+            TryCatchInject.target = target;
+
+            MethodInfo methodToReplace = target.GetType().GetMethod(method);
+            MethodInfo methodToInject = typeof(TryCatchInject).GetMethod(method);
+            RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
+            RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
+
+            unsafe
+            {
+                if (IntPtr.Size == 4)
+                {
+                    int* inj = (int*)methodToInject.MethodHandle.Value.ToPointer() + 2;
+                    int* tar = (int*)methodToReplace.MethodHandle.Value.ToPointer() + 2;
+                    *tar = *inj;
+                }
+                else
+                {
+
+                    long* inj = (long*)methodToInject.MethodHandle.Value.ToPointer() + 1;
+                    long* tar = (long*)methodToReplace.MethodHandle.Value.ToPointer() + 1;
+                    *tar = *inj;
+                }
+            }
+        }
+
+        public string TryCatch()
+        {
+            throw new Exception();
+        }
     }
 
 }

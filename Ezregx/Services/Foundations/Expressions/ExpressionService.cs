@@ -21,5 +21,9 @@ namespace Ezregx.Services.Foundations.Expressions
                 throw ex;
             }
         }
+        public string FakeTryCatch(ReturningStringFunction returningStringFunction)
+        {
+            throw new Exception();
+        }
     }
 }
