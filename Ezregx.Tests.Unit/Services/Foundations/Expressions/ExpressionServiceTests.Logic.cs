@@ -55,7 +55,7 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
         public void DeleteMeTo()
         {
             //given
-            TryCatchInject.Setup(this.expressionService);
+            TryCatchInject.Setup(typeof(ExpressionService));
 
             //when
             Action action = () => this.expressionService.GetStartExpression();
@@ -69,16 +69,14 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
 
     public class TryCatchInject
     {
-        private static object target;
+        //private static Type target;
         private const string method = "TryCatch";
         public TryCatchInject()
         {
         }
-        public static void Setup(object target)
+        public static void Setup(Type target)
         {
-            TryCatchInject.target = target;
-
-            MethodInfo methodToReplace = target.GetType().GetMethod(method);
+            MethodInfo methodToReplace = target.GetMethod(method);
             MethodInfo methodToInject = typeof(TryCatchInject).GetMethod(method);
             RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
             RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
