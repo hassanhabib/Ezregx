@@ -16,9 +16,9 @@ namespace Ezregx.Services.Foundations.Expressions
             {
                 return returningStringFunction();
             }
-            catch
+            catch(Exception ex)
             {
-                return string.Empty;
+                throw ex;
             }
         }
     }
