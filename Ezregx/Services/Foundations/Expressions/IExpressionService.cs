@@ -6,6 +6,6 @@ namespace Ezregx.Services.Foundations.Expressions
 {
     public interface IExpressionService
     {
-        string GetStartExpression();
+        string RetrieveStartExpression();
     }
 }

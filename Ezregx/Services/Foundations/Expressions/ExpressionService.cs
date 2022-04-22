@@ -2,24 +2,30 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
+using System;
+using Ezregx.Models.Foundations.Expressions.Exceptions;
+
 namespace Ezregx.Services.Foundations.Expressions
 {
     public partial class ExpressionService : IExpressionService
     {
 
-        public string GetStartExpression() => TryCatch(() => "^");
+        public string RetrieveStartExpression() =>
+        TryCatch(() => GetStartExpression());
+
+        private static string GetStartExpression() => "^";
 
         public delegate string ReturningStringFunction();
 
-        public static string TryCatch(ReturningStringFunction returningStringFunction)
+        private string TryCatch(ReturningStringFunction returningStringFunction)
         {
             try
             {
                 return returningStringFunction();
             }
-            catch
+            catch (Exception exception)
             {
-                return string.Empty;
+                throw new ExpressionServiceException(exception);
             }
         }
     }

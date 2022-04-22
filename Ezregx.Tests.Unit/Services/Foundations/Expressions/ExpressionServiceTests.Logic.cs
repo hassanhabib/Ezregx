@@ -2,10 +2,13 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Reflection;
+using Ezregx.Models.Foundations.Expressions.Exceptions;
 using Ezregx.Services.Foundations.Expressions;
 using FluentAssertions;
+using HarmonyLib;
 using Xunit;
 using static Ezregx.Services.Foundations.Expressions.ExpressionService;
 
@@ -21,7 +24,7 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
 
             // when
             string actualExpressionStart =
-                this.expressionService.GetStartExpression();
+                this.expressionService.RetrieveStartExpression();
 
             // then
             actualExpressionStart.Should().BeEquivalentTo(
@@ -29,21 +32,26 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
         }
 
         [Fact]
-        public void DeleteMe()
+        public void ShouldThrowServiceException()
         {
-            MethodInfo methodInfo = typeof(ExpressionService)
-                .GetMethod(nameof(this.expressionService.GetStartExpression));
+            var harmony = new Harmony("whatever");
 
-            var memberInfo = methodInfo.DeclaringType.GetMembers();
+            var mOriginal = typeof(ExpressionService).GetMethod(
+                "GetStartExpression",
+                BindingFlags.NonPublic | BindingFlags.Static);
 
-            var tryCatchMember = memberInfo.Where(m => m.Name == "TryCatch").First().DeclaringType;
+            var mPrefix = typeof(ExpressionServiceTests).GetMethod(
+                "ThrowException",
+                BindingFlags.Static | BindingFlags.Public);
 
-            var tryCatchMethod = ((TypeInfo)tryCatchMember).DeclaredMethods.Where(m => m.Name == "TryCatch").First();
+            harmony.Patch(mOriginal, new HarmonyMethod(mPrefix));
 
-            ReturningStringFunction param = () => throw new System.Exception();
+            Assert.Throws<ExpressionServiceException>(() =>
+                this.expressionService.RetrieveStartExpression());
 
-            var value = tryCatchMethod.Invoke(typeof(ExpressionService), new object[] { param });
-            Assert.True(true);
+            harmony.UnpatchAll();
         }
+
+        public static void ThrowException() => throw new Exception();
     }
 }
