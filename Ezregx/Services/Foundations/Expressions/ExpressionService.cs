@@ -6,11 +6,12 @@ namespace Ezregx.Services.Foundations.Expressions
 {
     public partial class ExpressionService : IExpressionService
     {
+
         public string GetStartExpression() => TryCatch(() => "^");
 
         public delegate string ReturningStringFunction();
 
-        public string TryCatch(ReturningStringFunction returningStringFunction)
+        public static string TryCatch(ReturningStringFunction returningStringFunction)
         {
             try
             {
