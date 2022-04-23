@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using Ezregx.Models.Foundations.Expressions.Exceptions;
 using Ezregx.Services.Foundations.Expressions;
 using FluentAssertions;
 using Xunit;
@@ -55,53 +56,83 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
         public void DeleteMeTo()
         {
             //given
-            TryCatchInject.Setup(typeof(ExpressionService));
+            TryCatchInject.Service = this.expressionService as ExpressionService;
+            new TryCatchInject().Set();
 
             //when
             Action action = () => this.expressionService.GetStartExpression();
 
             //then
-            action.Should().Throw<Exception>();
+            action.Should().Throw<ExpressionServiceException>();
         }
 
 
     }
 
-    public class TryCatchInject
+
+    public unsafe class TryCatchInject
     {
-        //private static Type target;
+        public static ExpressionService Service;
         private const string method = "TryCatch";
+        private IntPtr originalMethodPtr;
+        private IntPtr hookMethodPtr;
         public TryCatchInject()
         {
+
         }
-        public static void Setup(Type target)
+        public void Set()
         {
-            MethodInfo methodToReplace = target.GetMethod(method);
-            MethodInfo methodToInject = typeof(TryCatchInject).GetMethod(method);
-            RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
-            RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
+            MethodInfo originalMethod = typeof(ExpressionService).GetMethod(method);
+            MethodInfo hookMethod = typeof(TryCatchInject).GetMethod(method);
+            RuntimeHelpers.PrepareMethod(originalMethod.MethodHandle);
+            RuntimeHelpers.PrepareMethod(hookMethod.MethodHandle);
+            hookMethodPtr = hookMethod.MethodHandle.Value;
+            originalMethodPtr = originalMethod.MethodHandle.Value;
 
-            unsafe
+            if (IntPtr.Size == 4)
             {
-                if (IntPtr.Size == 4)
-                {
-                    int* inj = (int*)methodToInject.MethodHandle.Value.ToPointer() + 2;
-                    int* tar = (int*)methodToReplace.MethodHandle.Value.ToPointer() + 2;
-                    *tar = *inj;
-                }
-                else
-                {
+                int* hook = (int*)hookMethodPtr.ToPointer() + 2;
+                int* tar = (int*)originalMethodPtr.ToPointer() + 2;
+                *tar = *hook;
+            }
+            else
+            {
+                long* hook = (long*)hookMethodPtr.ToPointer() + 1;
+                long* tar = (long*)originalMethodPtr.ToPointer() + 1;
+                *tar = *hook;
+            }
+        }
 
-                    long* inj = (long*)methodToInject.MethodHandle.Value.ToPointer() + 1;
-                    long* tar = (long*)methodToReplace.MethodHandle.Value.ToPointer() + 1;
-                    *tar = *inj;
-                }
+        public void Unset()
+        {
+            MethodInfo originalMethod = typeof(ExpressionService).GetMethod(method);
+            MethodInfo hookMethod = typeof(TryCatchInject).GetMethod(method);
+            RuntimeHelpers.PrepareMethod(originalMethod.MethodHandle);
+            RuntimeHelpers.PrepareMethod(hookMethod.MethodHandle);
+            hookMethodPtr = hookMethod.MethodHandle.Value;
+            originalMethodPtr = originalMethod.MethodHandle.Value;
+
+            if (IntPtr.Size == 4)
+            {
+                int* hook = (int*)hookMethodPtr.ToPointer() + 2;
+                int* tar = (int*)originalMethodPtr.ToPointer() + 2;
+                *hook = *tar;
+            }
+            else
+            {
+
+                long* hook = (long*)hookMethodPtr.ToPointer() + 1;
+                long* tar = (long*)originalMethodPtr.ToPointer() + 1;
+                *hook = *tar;
             }
         }
 
         public string TryCatch()
         {
-            throw new Exception();
+            ExpressionService.ReturningStringFunction parameter 
+                                                    = () => throw new Exception();
+            Unset();
+            return Service.TryCatch(parameter);
         }
     }
 

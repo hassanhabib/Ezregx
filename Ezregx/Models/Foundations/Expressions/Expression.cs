@@ -4,7 +4,7 @@
 
 using Ezregx.Services.Foundations.Expressions;
 
-namespace Ezregx
+namespace Ezregx.Models.Foundations.Expressions
 {
     public static class Expression
     {

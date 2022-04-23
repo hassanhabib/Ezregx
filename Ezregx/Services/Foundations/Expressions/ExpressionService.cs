@@ -2,6 +2,8 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
+using Ezregx.Models.Foundations.Expressions.Exceptions;
+
 namespace Ezregx.Services.Foundations.Expressions
 {
     public partial class ExpressionService : IExpressionService
@@ -16,14 +18,11 @@ namespace Ezregx.Services.Foundations.Expressions
             {
                 return returningStringFunction();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;
+                throw new ExpressionServiceException(ex);
             }
         }
-        public string FakeTryCatch(ReturningStringFunction returningStringFunction)
-        {
-            throw new Exception();
-        }
+
     }
 }
