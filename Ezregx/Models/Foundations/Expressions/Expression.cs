@@ -5,14 +5,9 @@
 using Ezregx.Services.Foundations.Expressions;
 using System;
 
-namespace Ezregx
+namespace Ezregx.Models.Foundations.Expressions
 {
-    public static class Expression
+    public class Expression : IExpression
     {
-        private static IExpressionService ExpressionService =
-            new ExpressionService();
-
-        public static string OnStart(this string text) =>
-            throw new NotImplementedException();
     }
 }

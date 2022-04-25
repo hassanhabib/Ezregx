@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Xeption" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

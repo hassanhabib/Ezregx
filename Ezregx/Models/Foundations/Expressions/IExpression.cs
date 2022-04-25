@@ -2,7 +2,7 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
-namespace Ezregx
+namespace Ezregx.Models.Foundations.Expressions
 {
     public interface IExpression
     {
