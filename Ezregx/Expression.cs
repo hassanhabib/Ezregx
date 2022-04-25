@@ -2,8 +2,8 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
-using System;
 using Ezregx.Services.Foundations.Expressions;
+using System;
 
 namespace Ezregx
 {

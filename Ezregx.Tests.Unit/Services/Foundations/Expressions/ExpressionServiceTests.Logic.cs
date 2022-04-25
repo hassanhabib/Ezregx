@@ -2,15 +2,13 @@
 // Copyright (c) Coalition of the Good-Hearted Engineers
 // ---------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Reflection;
 using Ezregx.Models.Foundations.Expressions.Exceptions;
 using Ezregx.Services.Foundations.Expressions;
 using FluentAssertions;
 using HarmonyLib;
+using System;
+using System.Reflection;
 using Xunit;
-using static Ezregx.Services.Foundations.Expressions.ExpressionService;
 
 namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
 {
