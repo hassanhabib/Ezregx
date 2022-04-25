@@ -6,6 +6,7 @@ using Ezregx.Models.Foundations.Expressions.Exceptions;
 using Ezregx.Services.Foundations.Expressions;
 using FluentAssertions;
 using HarmonyLib;
+using InternalMock.Extensions;
 using System;
 using System.Reflection;
 using Xunit;
@@ -32,22 +33,21 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
         [Fact]
         public void ShouldThrowServiceException()
         {
-            var harmony = new Harmony("whatever");
+            // given
+            var exception = new Exception();
 
-            var mOriginal = typeof(ExpressionService).GetMethod(
-                "GetStartExpression",
-                BindingFlags.NonPublic | BindingFlags.Static);
+            this.expressionService.Mock(
+                methodName: "GetStartExpression")
+                .Throws(exception);
 
-            var mPrefix = typeof(ExpressionServiceTests).GetMethod(
-                "ThrowException",
-                BindingFlags.Static | BindingFlags.Public);
+            // when
+            Action retrieveStartExpression = () =>
+            this.expressionService.RetrieveStartExpression();
 
-            harmony.Patch(mOriginal, new HarmonyMethod(mPrefix));
+            // then
+            retrieveStartExpression.Should().Throw<ExpressionServiceException>();
 
-            Assert.Throws<ExpressionServiceException>(() =>
-                this.expressionService.RetrieveStartExpression());
-
-            harmony.UnpatchAll();
+            this.expressionService.ClearAllOtherCalls();
         }
 
         public static void ThrowException() => throw new Exception();
