@@ -6,6 +6,9 @@ namespace Ezregx.Services.Foundations.Expressions
 {
     public partial class ExpressionService : IExpressionService
     {
-        public string GetStartExpression() => "^";
+        public string GetStartExpression() =>
+            GetCaret();
+
+        private string GetCaret() => "^";
     }
 }
