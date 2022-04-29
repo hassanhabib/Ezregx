@@ -12,7 +12,7 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
     public partial class ExpressionServiceTests
     {
         [Fact]
-        public void ShouldThrowServiceExceptionIfServiceExceptionIsThrown()
+        public void ShouldThrowServiceExceptionOnGetStartIfExceptionOccurs()
         {
             // given
             var exception = new Exception();
@@ -29,7 +29,10 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
             ExpressionServiceException expressionServiceException =
                 Assert.Throws<ExpressionServiceException>(getStartExpressionAction);
 
-            Assert.True(expressionServiceException.InnerException is FailedExpressionServiceException);
+            Assert.True(expressionServiceException.InnerException 
+                is FailedExpressionServiceException);
+
+            this.expressionService.ClearAllOtherCalls();
         }
     }
 }
