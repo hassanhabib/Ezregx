@@ -21,16 +21,23 @@ namespace Ezregx.Tests.Unit.Services.Foundations.Expressions
                 methodName: "GetCaret")
                     .Throws(exception);
 
+            var failedExpressionServiceException =
+                new FailedExpressionServiceException(exception);
+
+            var expectedExpressionServiceException =
+                new ExpressionServiceException(failedExpressionServiceException);
+
             // when
             Action getStartExpressionAction = () =>
                 this.expressionService.GetStartExpression();
 
             // then
-            ExpressionServiceException expressionServiceException =
+            ExpressionServiceException actualExpressionServiceException =
                 Assert.Throws<ExpressionServiceException>(getStartExpressionAction);
 
-            Assert.True(expressionServiceException.InnerException 
-                is FailedExpressionServiceException);
+            AssertExceptionsAreSame(
+                actualExpressionServiceException,
+                expectedExpressionServiceException);
 
             this.expressionService.ClearAllOtherCalls();
         }
