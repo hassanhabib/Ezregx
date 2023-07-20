@@ -7,3 +7,9 @@
 
 ## Introduction
 A library built by engineers for humans to develop regular expressions - enjoy it!
+
+## Standard-Compliance
+This library was built according to The Standard. The library follows engineering principles, patterns and tooling as recommended by The Standard.
+
+This library is also a community effort which involved many nights of pair-programming, test-driven development and in-depth exploration research and design discussions.
+
